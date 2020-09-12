@@ -7,7 +7,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-const INTEGRITY_CHECKSUM = 'ca2c3cd7453d8c614e2c19db63ede1a1'
+const INTEGRITY_CHECKSUM = 'd1e0e502f550d40a34bee90822e4bf98'
 const bypassHeaderName = 'x-msw-bypass'
 
 let clients = {}
@@ -27,6 +27,13 @@ self.addEventListener('message', async function (event) {
   const allClientIds = allClients.map((client) => client.id)
 
   switch (event.data) {
+    case 'KEEPALIVE_REQUEST': {
+      sendToClient(client, {
+        type: 'KEEPALIVE_RESPONSE',
+      })
+      break
+    }
+
     case 'INTEGRITY_CHECK_REQUEST': {
       sendToClient(client, {
         type: 'INTEGRITY_CHECK_RESPONSE',
@@ -135,7 +142,7 @@ self.addEventListener('fetch', async function (event) {
         case 'MOCK_SUCCESS': {
           setTimeout(
             resolve.bind(this, createResponse(clientMessage)),
-            clientMessage.payload.delay
+            clientMessage.payload.delay,
           )
           break
         }
@@ -167,7 +174,7 @@ This exception has been gracefully handled as a 500 response, however, it's stro
 If you wish to mock an error response, please refer to this guide: https://mswjs.io/docs/recipes/mocking-error-responses\
   `,
             request.method,
-            request.url
+            request.url,
           )
 
           return resolve(createResponse(clientMessage))
@@ -178,9 +185,9 @@ If you wish to mock an error response, please refer to this guide: https://mswjs
         '[MSW] Failed to mock a "%s" request to "%s": %s',
         request.method,
         request.url,
-        error
+        error,
       )
-    })
+    }),
   )
 })
 

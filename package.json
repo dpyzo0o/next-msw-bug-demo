@@ -8,9 +8,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "file-saver": "^2.0.2",
-    "msw": "^0.20.5",
+    "msw": "^0.21.1",
     "next": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
